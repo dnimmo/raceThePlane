@@ -1,0 +1,42 @@
+extends layout
+
+block content
+	h1 #RACETHEPLANE
+
+	section(id="twitterFeed")
+		a(href="https://twitter.com/British_Airways" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false") Follow
+		script(type="text/javascript").
+			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+		div(id="feed")
+		div(id="social")
+			h2(class="midline") Share Race
+			ul
+				li
+					a(href="twitter.com") T
+				li
+					a(href="plus.google.com") G
+				li
+					a(href="facebook.com") F
+			a Competition Terms
+	section(id="mapContent")
+		a(href="#") Power the Tweetliner
+
+	section(id="info")
+		img(src="" alt="British Airways logo")
+		p Join the race now and make your tweet count! Help power the virtual plane against the British&nbsp;Airways Dreamliner from London to Toronto, and you could win 1 of 5 pairs of tickets. On your marks. Get set. Tweet #RaceThePlane
+
+		img(src="" alt="Dreamliner")
+		p @British_Airways
+			span Dreamliner
+		p {{deamliner.milesTravelled}} {{totalMiles}}
+		a(href="#") Find Out More
+
+		img(src="" alt="Tweetliner")
+		p @British_Airways
+			span Tweetliner
+		p {{tweetliner.milesTravelled}} {{totalMiles}}
+
+		h2(class="midline") Next Race
+		p Sep 24
+		a(href="") Remind Me
+		a(href="") Watch Film

@@ -1,0 +1,11 @@
+doctype 5
+html(data-ng-app="raceapp")
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+    script(src="http://code.angularjs.org/1.2.0rc1/angular-resource.min.js" type="text/javascript")
+    script(src="/socket.io/socket.io.js" type="text/javascript")
+    script(src="/js/pcfapp.js" type="text/javascript")
+    script(src="/js/controllers.js" type="text/javascript")
