@@ -4,5 +4,7 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'British Airways | Race The Plane' });
+  res.render('index', { title: 'British Airways | Race The Plane'});
 };
+
+//data.text = tweet

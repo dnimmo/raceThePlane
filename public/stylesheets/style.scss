@@ -1,8 +1,157 @@
+$colour1: #1E80E1;
+$transition: all linear 0.4s;
+
+*{
+	box-sizing: border-box;
+}
+
+@font-face{
+	font-family: 'plusplus';
+	src: url('fonts/plusplus-webfont.tff'), url('fonts/plusplus-webfont.svg'), 
+    url('fonts/plusplus-webfont.eot'), url('fonts/plusplus-webfont.woff'), url('fonts/plusplus-webfont.otf');
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	background: url('../images/clouds.jpg');
+	background-position: center center;
+	background-repeat: no-repeat;
+  	padding: 5rem;
+  	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  	color: $colour1;
+
+	&.button{
+		text-transform: uppercase;
+		color: #fff;
+		border-radius: 0.2rem;
+		padding: 0.7rem 2.5rem;
+		background-color: lighten($colour1, 20%);
+		border: 0.1rem solid lighten($colour1, 5%);
+		text-decoration: none;
+		transition: $transition;
+
+		&:hover{
+			background-color: $colour1;
+		}
+  }
+}
+
+#twitterFeed{
+	width: 20%;
+	float: left;
+
+	::-webkit-scrollbar{
+		opacity: 0;
+	}
+}
+
+#feed{
+	padding: 0;
+	margin: 0;
+	height: 70vh;
+	overflow-y: auto;
+
+	h2{
+		color: $colour1;
+		padding: 0 0.4rem 0 0;
+		margin: 0;
+	}
+	.screenName{
+		color: #777;
+		margin: 0;
+		padding: 0;
+	}
+	ul{
+		list-style: none;
+		padding: 0;
+
+		li{
+			border-top: 2px solid #f1f1f1;
+
+			&:first-of-type{
+				border: 0;
+			}
+		}
+	}
+}
+
+#social{
+	ul{
+		font-family: 'plusplus';
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		margin-bottom: 0.4rem;
+
+		li{
+			display: inline;
+			border: 0.1rem solid #444;
+			border-radius: 2.5rem;
+			width: 3rem;
+			height: 3rem;
+			font-size: 1.8rem;
+			margin-left: 0.3rem;
+			padding: 0.3rem;
+			opacity: 0.7;
+			transition: $transition;
+
+			&:hover{
+				opacity: 1;
+			}
+
+			&:first-of-type{
+				margin-left: 0;
+			}
+
+			a{
+				color: #444;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+#mapContent{
+	width: 60%;
+	float: left;
+	text-align: center;
+}
+
+#map{
+	border: 2px solid #f1f1f1;
+	height: 65vh;
+	width: 65vh;
+	border-radius: 50rem;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5%;
+	background-color: lighten($colour1, 25%);
+}
+
+#info{
+	width: 20%;
+	float: left;
+	text-align: right;
+	font-size: 1.1rem;
+
+	a{
+		display: block;
+		text-transform: uppercase;
+	}
+
+	span{
+		display: block;
+		text-transform: uppercase;
+		font-weight: bold;
+
+		&.dreamliner{
+			color: #e00000;
+		}
+
+		&.tweetliner{
+			color: #0E203F;
+		}
+	}
 }

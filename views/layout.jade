@@ -1,11 +1,13 @@
 doctype 5
-html(data-ng-app="raceapp")
+html(data-ng-app="raceapp" data-ng-controller="RaceController" data-ng-cloak)
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     block content
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular.min.js" type="text/javascript")
     script(src="http://code.angularjs.org/1.2.0rc1/angular-resource.min.js" type="text/javascript")
     script(src="/socket.io/socket.io.js" type="text/javascript")
-    script(src="/js/pcfapp.js" type="text/javascript")
+    script(src="/js/raphael-min.js")
+    script(src="/js/raceapp.js" type="text/javascript")
     script(src="/js/controllers.js" type="text/javascript")
