@@ -91,7 +91,7 @@ function findTweets(){
 // ======================
 
 //Twitter - search for #RaceThePlane
-twit.stream('statuses/filter', {track: 'flight'}, function(stream){
+twit.stream('statuses/filter', {track: 'bieber'}, function(stream){
 	io.sockets.on('connection', function(socket){
 		console.log("Connection " + socket.id + " accepted.");
 		stream.on('data', function(data){
