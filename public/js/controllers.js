@@ -16,13 +16,14 @@ function RaceController($scope, socket){
 	var originCountry = map.circle(startPoint[0]-30, startPoint[1]-40, 75);
 	var destinationCountry = map.circle(endPoint[0]-75, endPoint[1]-100, 200);
 	var dreamLiner = map.circle(startPoint[0], startPoint[1], 10);
-
+	var counter = 0; // For the animation: Work out how to replace with scope.tweetliner! 
 	map.setViewBox(0,0, svgWidth, svgHeight, true);
 
 	dreamLiner.attr('fill', '#000');
 	originCountry.attr('fill', '#4DBD33');
 	destinationCountry.attr('fill', '#4DBD33');
 
+	//Set up the curve - randomly create flight path (Change this in future)
 	function curve(x, y, zx, zy, colour) {
         var ax = Math.floor(Math.random() * 200) + x;
         var ay = Math.floor(Math.random() * 200) + (y - 150);
@@ -55,16 +56,13 @@ function RaceController($scope, socket){
 		move();
 	});
 
-	var counter = 0;    // a counter that counts animation steps
-
 	function move(){
-	    if(flightPath.getTotalLength() <= counter){   //break as soon as the total length is reached
+	    if(flightPath.getTotalLength() <= counter){   // Stop when it gets to the destination!
 	        clearInterval(animation);
 	        return;
 	    }
-	    var pos = flightPath.getPointAtLength(counter);   //get the position (see Raphael docs)
-	    e.attr({cx: pos.x, cy: pos.y});  //set the circle position
-	    
-	    counter++; // count the step counter one up
+	    var pos = flightPath.getPointAtLength(counter);   // Get the currentposition
+	    e.attr({cx: pos.x, cy: pos.y});  // Set the new position
+	    counter++;
 	};
 };
