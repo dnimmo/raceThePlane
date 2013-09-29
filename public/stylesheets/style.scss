@@ -1,22 +1,68 @@
 $colour1: #1E80E1;
 $transition: all linear 0.4s;
 
+/*Breakpoints*/
+@mixin bp ($p){
+	@if ($p == 'xxs'){
+        @media screen and (max-width:680px){@content;}
+    }
+    @if ($p == 'xs'){
+        @media screen and (max-width:1000px){@content;}
+    }
+    @else if ($p == 's'){
+      @media screen and (max-width:1070px){@content;}
+    }
+    @else if ($p == 'm'){
+        @media screen and (max-width:1250px){@content;}
+    }
+    @else if ($p == 'l'){
+        @media screen and (max-width:1400px){@content;}
+    }
+    @else if ($p == 'xl'){
+        @media screen and (max-width:1655px){@content;}
+    }
+}
+// Keyframes mixin
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {@content;}
+  @-moz-keyframes #{$name} {@content;}
+  @-ms-keyframes #{$name} {@content;}
+  @keyframes #{$name} {@content;}
+//@content;
+}
+
+@include keyframes(slide-up){
+	0%{
+		transform: translateY(4rem);
+		opacity: 0.5;
+	}
+	100%{
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
 *{
 	box-sizing: border-box;
 }
 
 @font-face{
 	font-family: 'plusplus';
-	src: url('fonts/plusplus-webfont.tff'), url('fonts/plusplus-webfont.svg'), 
+	src: url('fonts/plusplus-webfont.svg'), 
     url('fonts/plusplus-webfont.eot'), url('fonts/plusplus-webfont.woff'), url('fonts/plusplus-webfont.otf');
 }
 
 body {
-	background: url('../images/clouds.jpg');
-	background-position: center center;
-	background-repeat: no-repeat;
-  	padding: 5rem;
-  	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	background-color: lighten($colour1, 40%);
+	background-image: url('../images/noise.png');
+	padding: 5rem;
+  	font-family: 'Raleway', sans-serif;
+  	font-size: 14px;
+  	color: #222;
+
+  	@include bp(l){
+  		padding: 2rem;
+  	}
 }
 
 a {
@@ -30,6 +76,7 @@ a {
 		background-color: lighten($colour1, 20%);
 		border: 0.1rem solid lighten($colour1, 5%);
 		text-decoration: none;
+		box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
 		transition: $transition;
 
 		&:hover{
@@ -37,13 +84,51 @@ a {
 		}
   }
 }
-
+h1{
+	font-size: 2rem;
+}
 #twitterFeed{
 	width: 20%;
 	float: left;
 
 	::-webkit-scrollbar{
 		opacity: 0;
+	}
+
+	@include bp(m){
+		transform: translateX(-125rem);
+		max-width: 0;
+		background-color: lighten($colour1,30%)	;
+		border-right: 2px solid #999;
+    	margin: -5rem;
+    	padding: 5rem;
+    	position: absolute;
+    	width: 50%;
+    	z-index: 9999;
+    	transition: $transition;
+
+		&.twitterFeed-true{
+			max-width: 1000rem;
+			transform: translateX(0);
+			min-height: 200vh;
+		}
+	}
+
+	@include bp(xxs){
+		width: 75%;
+		overflow: none;
+	}
+
+	.twitterFeed-false{
+		display: none;
+
+		@include bp(m){
+			display: inline-block;
+			margin-left: 40%;
+			font-size: 3rem;
+			font-weight: bold;
+			cursor: pointer;
+		}
 	}
 }
 
@@ -52,28 +137,37 @@ a {
 	margin: 0;
 	height: 70vh;
 	overflow-y: auto;
+	word-break: break-word;
 
+	@include bp(m){
+		height: 150vh;
+	}
+
+	.card{
+		width: 99%;
+	}
 	h2{
 		color: $colour1;
 		padding: 0 0.4rem 0 0;
 		margin: 0;
+		border: 0;
+		text-transform: none;
+		font-size: 1.6rem;
 	}
 	.screenName{
 		color: #777;
 		margin: 0;
 		padding: 0;
+		font-size: 1.1rem;
 	}
 	ul{
 		list-style: none;
 		padding: 0;
-
-		li{
-			border-top: 2px solid #f1f1f1;
-
-			&:first-of-type{
-				border: 0;
-			}
-		}
+	}
+	p{
+		padding: 0.2rem 1rem;
+		line-height: 1.5rem;
+		font-size: 1.1rem;
 	}
 }
 
@@ -82,8 +176,7 @@ a {
 		font-family: 'plusplus';
 		list-style: none;
 		padding: 0;
-		margin: 0;
-		margin-bottom: 0.4rem;
+		font-size: 1.5rem;
 
 		li{
 			display: inline;
@@ -117,6 +210,55 @@ a {
 	width: 60%;
 	float: left;
 	text-align: center;
+	transition: $transition;
+
+	@include bp(m){
+		width: 70%;
+	}
+
+	@include bp(s){
+		width: 60%;
+	}
+	@include bp(xs){
+		transform: translateX(-100rem);
+		position: absolute;
+		background-color: #fff;
+		margin: -3rem;
+		border-right: 2px solid #f0f0f0;
+		border-bottom: 2px solid #f0f0f0;
+		width: 80%;
+		padding-bottom: 5rem;
+		height: 150vh;
+	}
+
+	@include bp(xxs){
+		width: 100%;
+		border: none;
+	}
+
+	#map{
+		height: 65vh;
+		width: 65vh;
+		margin-top: 5%;
+
+		@include bp(xxs){
+			width: 90vw;
+			height: 90vw;
+		}
+	}
+
+	&.showMap-true{
+		transform: translateX(-0);
+
+	}
+
+	.hideMap{
+		display: none;
+
+		@include bp(xs){
+			display: block;
+		}
+	}
 }
 
 #map{
@@ -127,7 +269,20 @@ a {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 5%;
+	box-shadow: 0.2rem 0.2rem 0.2rem rgba(0,0,0,0.2);
 	background-color: lighten($colour1, 25%);
+
+	@include bp(m){
+		margin-top: 10%;
+		height: 60vh;
+		width: 60vh;
+	}
+
+	@include bp(s){
+		height: 55vh;
+    	margin-top: 15%;
+    	width: 55vh;
+	}
 }
 
 #info{
@@ -136,9 +291,171 @@ a {
 	text-align: right;
 	font-size: 1.1rem;
 
+	@include bp(l){
+		font-size: 0.9rem;
+	}
+
+	@include bp(m){
+		font-size: 1.1rem;
+		width: 30%;
+	}
+
+	@include bp(s){
+		width: 35%;
+	}
+
+	@include bp(xs){
+		width: 100%;
+		text-align: left;
+	}
+
+	h1{
+		display: none;
+
+		@include bp(xs){
+			display: block;
+		}
+	}
+	img{
+		@include bp(xs){
+			float: right;
+		}
+		@include bp(xxs){
+			float: none;
+		}
+	}
+
+	.seeTweets{
+		display: none;
+
+		@include bp(m){
+			display: block;
+			width: 100%;
+			margin-bottom: 1rem;
+			cursor: pointer;
+		}
+
+		@include bp(s){
+			width: 100%;
+		}
+
+		@include bp(xs){
+			width: 100%;
+			margin-right: 1%;
+		}
+	}
+
+	.seeMap{
+		display: none;
+
+		@include bp(xs){
+			display: block;
+			width: 100%;
+			margin-bottom: 1rem;
+			cursor: pointer;
+		}
+
+		@include bp(xs){
+			width: 100%;
+			margin-right: 1%;
+		}
+	}
+
+
+	.copy{
+		margin-bottom: 5rem;
+		line-height: 1.5rem;
+
+		@include bp(l){
+			margin-bottom: 1rem;
+		}
+
+		@include bp(m){
+			margin-bottom: 3rem;
+		}
+		@include bp(xs){
+			padding-top: 2rem;
+			font-size: 1.8rem;
+			line-height: 2.3rem;
+		}
+		@include bp(xxs){
+			padding-top: 0;
+		}
+	}
+
+	.card{
+		animation: slide-up 2s;
+		-moz-animation: slide-up 2s;
+		-webkit-animation: slide-up 2s;
+
+		&+card{
+			animation: slide-up 3s;
+			-moz-animation: slide-up 3s;
+			-webkit-animation: slide-up 3s;
+		}
+
+		@include bp(xs){
+			width: 40%;
+			float: right;
+			margin-right: 5%;
+
+			&+card{
+				margin-right: 0;
+			}
+
+			&:after{
+				clear: both;
+			}
+		}
+
+		@include bp(xxs){
+			width: 100%;
+			margin-right: 0;
+		}
+	}
+
 	a{
 		display: block;
 		text-transform: uppercase;
+		color: #fff;
+		background-color: #e00000;
+		padding: 1rem 0;
+		float: right;
+		text-align: center;
+		width: 45%;
+		margin-left: 5%;
+		text-decoration: none;
+		font-weight: bold;
+		border-radius: 0.2rem;
+		box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+		transition: $transition;
+		
+		&:hover{
+			background-color: darken(#e00000, 10%);
+		}
+
+		@include bp(xl){
+			font-size: 0.8rem;
+		}
+
+		@include bp(l){
+			font-size: 0.7rem;
+		}
+
+		@include bp(m){
+			font-size: 1.1rem;
+		}
+		@include bp(xs){
+			width: 40%;
+			margin-right: 5%;
+			margin-top: 2rem;
+		}
+		@include bp(xxs){
+			width: 100%;
+			margin-top: 0;
+			margin-bottom: 2rem;
+			margin-right: 0;
+		}
 	}
 
 	span{
@@ -148,10 +465,65 @@ a {
 
 		&.dreamliner{
 			color: #e00000;
+			font-size: 1.4rem;
 		}
 
 		&.tweetliner{
 			color: #0E203F;
+			font-size: 1.4rem;
 		}
 	}
+
+	h2{
+		@include bp(l){
+			font-size: 1.4rem;
+		}
+
+		@include bp(xs){
+			font-size: 2rem;
+			padding-top: 3em;
+			text-align: center;
+		}
+		@include bp(xxs){
+			padding-top: 1rem;
+		}
+	}
+}
+
+.card{
+	text-align: center;
+	background-color: #fff;
+	padding: 0.5rem;
+	border: 0.1rem solid #f0f0f0;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+	margin-bottom: 1rem;
+	min-height: 9rem;
+
+	h2{
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		border-bottom: 0.2rem solid #f0f0f0;
+		text-transform: uppercase;
+		font-size: 2rem;
+	}
+
+	.date{
+		text-transform: uppercase;
+		color: #e00000;
+		font-weight: bold;
+		font-size: 1.8rem;
+	}
+}
+
+.nextRace{
+	margin-top: 5rem;
+
+	@include bp(xs){
+		clear: both;
+	}
+}
+
+.clearBoth{
+	clear: both;
 }

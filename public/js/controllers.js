@@ -3,6 +3,26 @@ function RaceController($scope, socket){
 	$scope.dreamliner = 0;
 	$scope.tweetliner = 0;
 	$scope.totalMiles = 3570;
+	$scope.twitterFeed;
+	$scope.map;
+
+	$scope.toggleTwitterFeed = function(arg){
+		if($scope.twitterFeed && arg){
+			$scope.twitterFeed = false;
+		} else {
+			$scope.twitterFeed = true;
+			$scope.map = false;
+		}
+	}
+
+	$scope.toggleMap = function(arg){
+		if($scope.map && arg){
+			$scope.map = false;
+		} else {
+			$scope.map = true;
+			$scope.twitterFeed = false;
+		}
+	}
 
 	// =======
 	// Raphael 
@@ -15,20 +35,17 @@ function RaceController($scope, socket){
 	var endPoint = [300, 250];
 	var originCountry = map.circle(startPoint[0]-30, startPoint[1]-40, 75);
 	var destinationCountry = map.circle(endPoint[0]-75, endPoint[1]-100, 200);
-	var dreamLiner = map.circle(startPoint[0], startPoint[1], 10);
 	var counter = 0; // For the animation: Work out how to replace with scope.tweetliner! 
 	map.setViewBox(0,0, svgWidth, svgHeight, true);
-
-	dreamLiner.attr('fill', '#000');
 	originCountry.attr('fill', '#4DBD33');
 	destinationCountry.attr('fill', '#4DBD33');
 
 	//Set up the curve - randomly create flight path (Change this in future)
 	function curve(x, y, zx, zy, colour) {
-        var ax = Math.floor(Math.random() * 200) + x;
-        var ay = Math.floor(Math.random() * 200) + (y - 150);
-        var bx = Math.floor(Math.random() * 200) + (zx - 100);
-        var by = Math.floor(Math.random() * 200) + (zy - 400);
+        var ax = 200 + x;
+        var ay = 200 + (y - 150);
+        var bx = 255 + (zx - 100);
+        var by = 500 + (zy - 400);
         e = map.circle(x, y, 10).attr({
             stroke: "none",
             fill: colour
@@ -44,8 +61,7 @@ function RaceController($scope, socket){
             	map.circle(x, y, 15).attr('fill', '#fff'), map.circle(zx, zy, 15).attr('fill', '#e00000')
             );
     }
-
-    curve(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#FF0000");
+    curve(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#e00000");
 
 	// =========
 	// Socket.io
