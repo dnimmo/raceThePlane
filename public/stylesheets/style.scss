@@ -364,6 +364,8 @@ h1{
 			width: 100%;
 			margin-bottom: 1rem;
 			cursor: pointer;
+			background-color: lighten($colour1, 20%);
+			border: 0.1rem solid lighten($colour1, 5%);
 		}
 
 		@include bp(xs){
@@ -384,6 +386,8 @@ h1{
 			width: 42%;
 			margin-bottom: 1rem;
 			cursor: pointer;
+			background-color: lighten($colour1, 20%);
+			border: 0.1rem solid lighten($colour1, 5%);
 		}
 
 		@include bp(xxs){
