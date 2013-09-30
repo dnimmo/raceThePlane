@@ -36,10 +36,12 @@ $transition: all linear 0.4s;
 
 @include keyframes(slide-up){
 	0%{
+		-webkit-transform: translateY(4rem);
 		transform: translateY(4rem);
 		opacity: 0.5;
 	}
 	100%{
+		-webkit-transform: translateY(0);
 		transform: translateY(0);
 		opacity: 1;
 	}
@@ -99,6 +101,7 @@ h1{
 	}
 
 	@include bp(m){
+		-webkit-transform: translateX(-125rem);
 		transform: translateX(-125rem);
 		max-width: 0;
 		background-color: rgba(210, 230, 249, 0.9);
@@ -113,6 +116,7 @@ h1{
 
 		&.twitterFeed-true{
 			max-width: 1000rem;
+			-webkit-transform: translateX(0);
 			transform: translateX(0);
 			min-height: 200vh;
 		}
@@ -235,6 +239,7 @@ h1{
 		width: 60%;
 	}
 	@include bp(xs){
+		-webkit-transform: translateX(-100rem);
 		transform: translateX(-100rem);
 		position: absolute;
 		background-color: rgba(255,255,255,0.9);
@@ -265,8 +270,8 @@ h1{
 	}
 
 	&.showMap-true{
-		transform: translateX(-0);
-
+		-webkit-transform: translateX(-0);
+		transform: translateX(0);
 	}
 
 	.hideMap{
