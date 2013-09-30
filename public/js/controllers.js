@@ -4,24 +4,16 @@ function RaceController($scope, socket){
 	$scope.tweetliner = 0;
 	$scope.totalMiles = 3570;
 	$scope.twitterFeed;
-	$scope.map;
+	$scope.map = false;
 
 	$scope.toggleTwitterFeed = function(arg){
-		if($scope.twitterFeed && arg){
-			$scope.twitterFeed = false;
-		} else {
-			$scope.twitterFeed = true;
-			$scope.map = false;
-		}
+		$scope.twitterFeed = arg;
+		$scope.map = false
 	}
 
 	$scope.toggleMap = function(arg){
-		if($scope.map && arg){
-			$scope.map = false;
-		} else {
-			$scope.map = true;
-			$scope.twitterFeed = false;
-		}
+		$scope.map = arg;
+		$scope.twitterFeed = false;
 	}
 
 	// =======

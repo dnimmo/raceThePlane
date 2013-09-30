@@ -2,10 +2,10 @@ extends layout
 
 block content
 	section(id="twitterFeed" class="twitterFeed-{{twitterFeed}}")
+		a(class="button hideTweets" data-ng-click="toggleTwitterFeed(false)") Hide Tweets
 		a(href="https://twitter.com/British_Airways" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false") Follow
 		script(type="text/javascript").
 			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-			[X]
 		div(id="feed")
 			ul
 				li(data-ng-repeat="tweet in tweets" class="card")
@@ -24,7 +24,7 @@ block content
 	section(id="mapContent" class="showMap-{{map}}")
 		h1 #RaceThePlane
 		a(href="#" class="button") Power the Tweetliner
-		br(class="clearBoth hideMap")
+		a(class="button hideMap" data-ng-click="toggleMap(false)") Hide Map
 
 		section(id="map")
 

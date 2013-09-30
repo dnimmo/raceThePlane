@@ -21,6 +21,9 @@ $transition: all linear 0.4s;
     @else if ($p == 'xl'){
         @media screen and (max-width:1655px){@content;}
     }
+    @else{
+    	@media screen and (max-width:$p){@content;}
+    }
 }
 // Keyframes mixin
 @mixin keyframes($name) {
@@ -98,7 +101,7 @@ h1{
 	@include bp(m){
 		transform: translateX(-125rem);
 		max-width: 0;
-		background-color: lighten($colour1,30%)	;
+		background-color: rgba(210, 230, 249, 0.9);
 		border-right: 2px solid #999;
     	margin: -5rem;
     	padding: 5rem;
@@ -106,6 +109,7 @@ h1{
     	width: 50%;
     	z-index: 9999;
     	transition: $transition;
+		box-shadow: 0.2rem 0.2rem 4rem rgba(0,0,0,0.4);
 
 		&.twitterFeed-true{
 			max-width: 1000rem;
@@ -117,6 +121,7 @@ h1{
 	@include bp(xxs){
 		width: 75%;
 		overflow: none;
+		background-color: rgba(210, 230, 249, 1);
 	}
 
 	.twitterFeed-false{
@@ -127,6 +132,16 @@ h1{
 			margin-left: 40%;
 			font-size: 3rem;
 			font-weight: bold;
+		}
+	}
+
+
+	.hideTweets{
+		display: none;
+
+		@include bp(m){
+			display: inline-block;
+			margin: 1rem;
 			cursor: pointer;
 		}
 	}
@@ -222,18 +237,20 @@ h1{
 	@include bp(xs){
 		transform: translateX(-100rem);
 		position: absolute;
-		background-color: #fff;
+		background-color: rgba(255,255,255,0.9);
 		margin: -3rem;
 		border-right: 2px solid #f0f0f0;
 		border-bottom: 2px solid #f0f0f0;
-		width: 80%;
+		width: 90%;
 		padding-bottom: 5rem;
 		height: 150vh;
+		box-shadow: 0.2rem 0.2rem 4rem rgba(0,0,0,0.4);
 	}
 
 	@include bp(xxs){
 		width: 100%;
 		border: none;
+		background-color: #fff;
 	}
 
 	#map{
@@ -256,7 +273,10 @@ h1{
 		display: none;
 
 		@include bp(xs){
-			display: block;
+			cursor: pointer;
+			display: inline-block;
+			margin-left: 1rem;
+			margin-top: 2rem;
 		}
 	}
 }
@@ -335,11 +355,11 @@ h1{
 			cursor: pointer;
 		}
 
-		@include bp(s){
-			width: 100%;
-		}
-
 		@include bp(xs){
+			width: 42%;
+			margin-right: 0;
+		}
+		@include bp(xxs){
 			width: 100%;
 			margin-right: 1%;
 		}
@@ -350,12 +370,12 @@ h1{
 
 		@include bp(xs){
 			display: block;
-			width: 100%;
+			width: 42%;
 			margin-bottom: 1rem;
 			cursor: pointer;
 		}
 
-		@include bp(xs){
+		@include bp(xxs){
 			width: 100%;
 			margin-right: 1%;
 		}
