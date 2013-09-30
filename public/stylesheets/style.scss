@@ -122,8 +122,10 @@ h1{
 		}
 	}
 
-	@include bp(xxs){
-		width: 95%;
+	@include bp(xs){
+		width: 100%;
+		margin: -3rem;
+		padding: 2rem;
 		overflow: none;
 		background-color: rgba(210, 230, 249, 1);
 	}
@@ -147,6 +149,8 @@ h1{
 			display: inline-block;
 			margin: 1rem;
 			cursor: pointer;
+			background-color: lighten($colour1, 20%);
+			border: 0.1rem solid lighten($colour1, 5%);
 		}
 	}
 }
@@ -282,6 +286,8 @@ h1{
 			display: inline-block;
 			margin-left: 1rem;
 			margin-top: 2rem;
+			background-color: lighten($colour1, 20%);
+			border: 0.1rem solid lighten($colour1, 5%);
 		}
 	}
 }
