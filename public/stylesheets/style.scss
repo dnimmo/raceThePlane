@@ -366,6 +366,10 @@ h1{
 			cursor: pointer;
 			background-color: lighten($colour1, 20%);
 			border: 0.1rem solid lighten($colour1, 5%);
+
+			&:hover{
+				background-color: $colour1;
+			}
 		}
 
 		@include bp(xs){
@@ -388,6 +392,10 @@ h1{
 			cursor: pointer;
 			background-color: lighten($colour1, 20%);
 			border: 0.1rem solid lighten($colour1, 5%);
+
+			&:hover{
+				background-color: $colour1;
+			}
 		}
 
 		@include bp(xxs){
