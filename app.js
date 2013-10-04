@@ -17,8 +17,9 @@ var twit = new twitter({
 	access_token_secret: 'NgmGTGWCyMQBHmf56KYrkITUfrwGYdYKAKnDisWHTo'
 });
 var tweets = [];
-var tweetCount;
+var tweetCount = 0;
 var miles = 0;
+var pos = "";
 
 var app = express();
 var server = http.createServer(app);
@@ -49,17 +50,21 @@ server.listen(app.get('port'), function(){
 });
 
 
-//If server is restarted, initialise count and tweets
+// If server is restarted, initialise count and tweets - Temporarily removed
 countTweets();
-findTweets();
 
 // =====================
 // Database interactions
 // =====================
 
+// REFACTOR THIS STUFF TO QUERY ONE RECORD INSTEAD OF COUNTING ALL OF THEM
+
+//Ensure that duplicate usernames are not added to the database
+tweetsCollection.ensureIndex({count: {count:1}}, {unique: true});
+
 //Function add a user to the database
-function addTweet(data){
-	tweetsCollection.insert(data, function(err){
+function increaseCount(){
+	tweetsCollection.save({count : tweetCount}, function(err){
 		if(err){
 			console.log("Error updating: "+err);
 		}
@@ -76,27 +81,35 @@ function countTweets(){
 	});
 };
 
-function findTweets(){
-	tweetsCollection.find(function(err, data){
-		if(err){
-			console.log("Error: "+err);
-		} else {
-			tweets = data;
-		}
-	});
-};
-
 // ======================
 // Socket.io interactions
 // ======================
 
 //Twitter - search for #RaceThePlane
-twit.stream('statuses/filter', {track: 'bieber'}, function(stream){
+twit.stream('statuses/filter', {track: 'flight'}, function(stream){
+
+	stream.on('data', function(data){
+		tweetCount++;
+		increaseCount();
+	});
+
 	io.sockets.on('connection', function(socket){
 		console.log("Connection " + socket.id + " accepted.");
+
+		socket.on('position', function(position, count){
+			pos = position;
+			tweetCount = count;
+		});
+
+		socket.on('milesTravelled', function(milesTravelled){
+			miles = milesTravelled;
+		});
+
+		socket.on('loadPosition', function(){
+			io.sockets.socket(socket.id).emit('loadedPosition', pos, miles, tweetCount);
+		});
+
 		stream.on('data', function(data){
-			addTweet(data);
-			tweetCount++;
 			socket.emit('tweet', data, tweetCount);
 		});
 	});

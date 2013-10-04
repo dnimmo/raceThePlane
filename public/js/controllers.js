@@ -1,10 +1,11 @@
 function RaceController($scope, socket){
 	$scope.tweets = [];
 	$scope.dreamliner = 0;
-	$scope.tweetliner = 0;
+	$scope.tweetliner;
 	$scope.totalMiles = 3570;
 	$scope.twitterFeed;
 	$scope.map = false;
+	$scope.position;
 
 	$scope.toggleTwitterFeed = function(arg){
 		$scope.twitterFeed = arg;
@@ -19,6 +20,7 @@ function RaceController($scope, socket){
 	// =======
 	// Raphael 
 	// =======
+	
 	var animation;
 	var map = new Raphael("map", '100%', '100%');
 	var svgWidth = 1000;
@@ -27,13 +29,12 @@ function RaceController($scope, socket){
 	var endPoint = [300, 250];
 	var originCountry = map.circle(startPoint[0]-30, startPoint[1]-40, 75);
 	var destinationCountry = map.circle(endPoint[0]-75, endPoint[1]-100, 200);
-	var counter = 0; // For the animation: Work out how to replace with scope.tweetliner! 
 	map.setViewBox(0,0, svgWidth, svgHeight, true);
 	originCountry.attr('fill', '#4DBD33');
 	destinationCountry.attr('fill', '#4DBD33');
 
-	//Set up the curve - randomly create flight path (Change this in future)
-	function curve(x, y, zx, zy, colour) {
+	//Set up the flight path
+	function flightPath(x, y, zx, zy, colour) {
         var ax = 200 + x;
         var ay = 200 + (y - 150);
         var bx = 255 + (zx - 100);
@@ -53,24 +54,36 @@ function RaceController($scope, socket){
             	map.circle(x, y, 15).attr('fill', '#fff'), map.circle(zx, zy, 15).attr('fill', '#e00000')
             );
     }
-    curve(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#e00000");
-
-	// =========
-	// Socket.io
-	// =========
-	socket.on('tweet', function(data, miles){
-		$scope.tweets.unshift(data);
-		$scope.tweetliner = miles;
-		move();
-	});
+    flightPath(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#e00000");
 
 	function move(){
-	    if(flightPath.getTotalLength() <= counter){   // Stop when it gets to the destination!
+	    if(flightPath.getTotalLength() <= $scope.tweetliner){  // Stop when it gets to the destination!
 	        clearInterval(animation);
 	        return;
 	    }
-	    var pos = flightPath.getPointAtLength(counter);   // Get the currentposition
+	   	var pos = flightPath.getPointAtLength($scope.tweetliner);   // Get the current position
 	    e.attr({cx: pos.x, cy: pos.y});  // Set the new position
-	    counter++;
+    	socket.emit('position', pos);
 	};
+
+	// =========
+	// Socket.io 
+	// =========
+
+	// Request position of flights
+	socket.emit('loadPosition');
+
+	socket.on('tweet', function(data, miles){
+		$scope.tweets.unshift(data);
+		$scope.tweetliner++;
+		socket.emit('milesTravelled', $scope.tweetliner);
+		move();
+	});
+
+	// Get plane position on client load
+	socket.on('loadedPosition',function(position, miles, count){
+		$scope.position = position;
+		$scope.tweetliner = miles;
+		move();
+	});
 };
