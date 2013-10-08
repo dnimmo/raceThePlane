@@ -5,7 +5,6 @@ function RaceController($scope, socket){
 	$scope.totalMiles = 3570;
 	$scope.twitterFeed;
 	$scope.map = false;
-	$scope.position;
 
 	$scope.toggleTwitterFeed = function(arg){
 		$scope.twitterFeed = arg;
@@ -33,13 +32,15 @@ function RaceController($scope, socket){
 	originCountry.attr('fill', '#4DBD33');
 	destinationCountry.attr('fill', '#4DBD33');
 
-	//Set up the flight path
-	function flightPath(x, y, zx, zy, colour) {
+	//Set up the Dreamliner flight path
+	function dreamFlightPath(x, y, zx, zy, colour) {
         var ax = 200 + x;
-        var ay = 200 + (y - 150);
+        var ay = 400 + (y - 150);
         var bx = 255 + (zx - 100);
         var by = 500 + (zy - 400);
-        e = map.circle(x, y, 10).attr({
+        controls = 	map.set(
+            		map.circle(x, y, 15).attr('fill', '#fff'), map.circle(zx, zy, 15).attr('fill', '#FFFFFF'));
+        dreamliner = map.circle(x, y, 10).attr({
             stroke: "none",
             fill: colour
         });
@@ -50,19 +51,50 @@ function RaceController($scope, socket){
                 "stroke-linecap": "round",
                 "stroke-opacity": 0.2
             });
-        controls = map.set(
-            	map.circle(x, y, 15).attr('fill', '#fff'), map.circle(zx, zy, 15).attr('fill', '#e00000')
-            );
     }
-    flightPath(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#e00000");
+    //Initialise flight path
+    dreamFlightPath(startPoint[0], startPoint[1]-35, endPoint[0], endPoint[1]-35, "#e00000");
 
-	function move(){
-	    if(flightPath.getTotalLength() <= $scope.tweetliner){  // Stop when it gets to the destination!
+	//Set up the Tweetliner flight path
+	function tweetFlightPath(x, y, zx, zy, colour) {
+        var ax = 200 + x;
+        var ay = 400 + (y - 150);
+        var bx = 255 + (zx - 100);
+        var by = 500 + (zy - 400);
+        controls = 	map.set(
+            		map.circle(x, y, 15).attr('fill', '#fff'), map.circle(zx, zy, 15).attr('fill', '#FFFFFF'));
+        tweetliner = map.circle(x, y, 10).attr({
+            stroke: "none",
+            fill: colour
+        });
+        var path = [["M", x, y], ["C", ax, ay, bx, by, zx, zy]];
+            tweetFlightPath = map.path(path).attr({
+                stroke: colour,
+                "stroke-width": 4,
+                "stroke-linecap": "round",
+                "stroke-opacity": 0.2
+            });
+    }
+    //Initialise Tweetliner flight path
+    tweetFlightPath(startPoint[0], startPoint[1], endPoint[0], endPoint[1], "#0E203F");
+
+	function moveDreamliner(){
+	    if(dreamFlightPath.getTotalLength() <= $scope.dreamliner){  // Stop when it gets to the destination!
 	        clearInterval(animation);
 	        return;
 	    }
-	   	var pos = flightPath.getPointAtLength($scope.tweetliner);   // Get the current position
-	    e.attr({cx: pos.x, cy: pos.y});  // Set the new position
+	   	var pos = tweetFlightPath.getPointAtLength($scope.dreamliner);   // Get the current position
+	    dreamliner.attr({cx: pos.x, cy: pos.y});  // Set the new position
+    	socket.emit('position', pos);
+	};
+
+	function moveTweetliner(){
+	    if(tweetFlightPath.getTotalLength() <= $scope.tweetliner){  // Stop when it gets to the destination!
+	        clearInterval(animation);
+	        return;
+	    }
+	   	var pos = tweetFlightPath.getPointAtLength($scope.tweetliner);   // Get the current position
+	    tweetliner.attr({cx: pos.x, cy: pos.y});  // Set the new position
     	socket.emit('position', pos);
 	};
 
@@ -77,13 +109,12 @@ function RaceController($scope, socket){
 		$scope.tweets.unshift(data);
 		$scope.tweetliner++;
 		socket.emit('milesTravelled', $scope.tweetliner);
-		move();
+		moveTweetliner();
 	});
 
 	// Get plane position on client load
-	socket.on('loadedPosition',function(position, miles, count){
-		$scope.position = position;
+	socket.on('loadedPosition',function(miles, count){
 		$scope.tweetliner = miles;
-		move();
+		moveTweetliner();
 	});
 };

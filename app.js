@@ -86,7 +86,7 @@ function countTweets(){
 // ======================
 
 //Twitter - search for #RaceThePlane
-twit.stream('statuses/filter', {track: 'flight'}, function(stream){
+twit.stream('statuses/filter', {track: 'bieber'}, function(stream){
 
 	stream.on('data', function(data){
 		tweetCount++;
@@ -106,7 +106,7 @@ twit.stream('statuses/filter', {track: 'flight'}, function(stream){
 		});
 
 		socket.on('loadPosition', function(){
-			io.sockets.socket(socket.id).emit('loadedPosition', pos, miles, tweetCount);
+			io.sockets.socket(socket.id).emit('loadedPosition', pos, tweetCount);
 		});
 
 		stream.on('data', function(data){
