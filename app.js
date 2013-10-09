@@ -16,10 +16,10 @@ var twit = new twitter({
 	access_token_key: '74781079-O7RSMeDm0n8dqZNaAhoFF6iiXKmJFJc1naAOdbfDM',
 	access_token_secret: 'NgmGTGWCyMQBHmf56KYrkITUfrwGYdYKAKnDisWHTo'
 });
-var tweets = [];
 var tweetCount = 0;
 var miles = 0;
 var pos = "";
+var dreamliner = 0;
 
 var app = express();
 var server = http.createServer(app);
@@ -51,7 +51,7 @@ server.listen(app.get('port'), function(){
 
 
 // If server is restarted, initialise count and tweets - Temporarily removed
-countTweets();
+//countTweets();
 
 // =====================
 // Database interactions
@@ -63,6 +63,7 @@ countTweets();
 tweetsCollection.ensureIndex({count: {count:1}}, {unique: true});
 
 //Function add a user to the database
+/*
 function increaseCount(){
 	tweetsCollection.save({count : tweetCount}, function(err){
 		if(err){
@@ -80,37 +81,39 @@ function countTweets(){
 		}
 	});
 };
+*/
 
 // ======================
 // Socket.io interactions
 // ======================
 
-//Twitter - search for #RaceThePlane
-twit.stream('statuses/filter', {track: 'bieber'}, function(stream){
 
-	stream.on('data', function(data){
+//Twitter - search for #RaceThePlane
+twit.stream('statuses/filter', {track: 'flight'}, function(stream){
+
+	stream.on('data', function(){
 		tweetCount++;
-		increaseCount();
+//		increaseCount();
 	});
 
 	io.sockets.on('connection', function(socket){
 		console.log("Connection " + socket.id + " accepted.");
-
-		socket.on('position', function(position, count){
-			pos = position;
-			tweetCount = count;
-		});
 
 		socket.on('milesTravelled', function(milesTravelled){
 			miles = milesTravelled;
 		});
 
 		socket.on('loadPosition', function(){
-			io.sockets.socket(socket.id).emit('loadedPosition', pos, tweetCount);
+			io.sockets.socket(socket.id).emit('loadedPosition', dreamliner, tweetCount);
 		});
 
 		stream.on('data', function(data){
-			socket.emit('tweet', data, tweetCount);
+			socket.emit('tweet', data, miles);
 		});
+
+		setInterval(function(){
+			dreamliner++;
+			socket.emit('dream', dreamliner);
+		}, 1500);
 	});
 });

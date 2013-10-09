@@ -1,6 +1,6 @@
 function RaceController($scope, socket){
 	$scope.tweets = [];
-	$scope.dreamliner = 0;
+	$scope.dreamliner;
 	$scope.tweetliner;
 	$scope.totalMiles = 3570;
 	$scope.twitterFeed;
@@ -21,6 +21,7 @@ function RaceController($scope, socket){
 	// =======
 	
 	var animation;
+	var dreamAnimation;
 	var map = new Raphael("map", '100%', '100%');
 	var svgWidth = 1000;
 	var svgHeight = 400;
@@ -45,7 +46,7 @@ function RaceController($scope, socket){
             fill: colour
         });
         var path = [["M", x, y], ["C", ax, ay, bx, by, zx, zy]];
-            flightPath = map.path(path).attr({
+            dreamFlightPath = map.path(path).attr({
                 stroke: colour,
                 "stroke-width": 4,
                 "stroke-linecap": "round",
@@ -80,12 +81,11 @@ function RaceController($scope, socket){
 
 	function moveDreamliner(){
 	    if(dreamFlightPath.getTotalLength() <= $scope.dreamliner){  // Stop when it gets to the destination!
-	        clearInterval(animation);
+	        clearInterval(dreamAnimation);
 	        return;
 	    }
-	   	var pos = tweetFlightPath.getPointAtLength($scope.dreamliner);   // Get the current position
+	   	var pos = dreamFlightPath.getPointAtLength($scope.dreamliner);   // Get the current position
 	    dreamliner.attr({cx: pos.x, cy: pos.y});  // Set the new position
-    	socket.emit('position', pos);
 	};
 
 	function moveTweetliner(){
@@ -95,7 +95,6 @@ function RaceController($scope, socket){
 	    }
 	   	var pos = tweetFlightPath.getPointAtLength($scope.tweetliner);   // Get the current position
 	    tweetliner.attr({cx: pos.x, cy: pos.y});  // Set the new position
-    	socket.emit('position', pos);
 	};
 
 	// =========
@@ -113,8 +112,14 @@ function RaceController($scope, socket){
 	});
 
 	// Get plane position on client load
-	socket.on('loadedPosition',function(miles, count){
+	socket.on('loadedPosition',function(dreamliner, miles){
 		$scope.tweetliner = miles;
+		$scope.dreamliner = dreamliner;
 		moveTweetliner();
 	});
+
+	socket.on('dream', function(dreamliner){
+		$scope.dreamliner = dreamliner;
+		moveDreamliner();
+	})
 };
