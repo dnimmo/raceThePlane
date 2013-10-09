@@ -36,7 +36,7 @@ function RaceController($scope, socket){
 	//Set up the Dreamliner flight path
 	function dreamFlightPath(x, y, zx, zy, colour) {
         var ax = 200 + x;
-        var ay = 400 + (y - 150);
+        var ay = 700 + (y - 150);
         var bx = 255 + (zx - 100);
         var by = 500 + (zy - 400);
         controls = 	map.set(
@@ -54,12 +54,12 @@ function RaceController($scope, socket){
             });
     }
     //Initialise flight path
-    dreamFlightPath(startPoint[0], startPoint[1]-35, endPoint[0], endPoint[1]-35, "#e00000");
+    dreamFlightPath(startPoint[0]+15, startPoint[1]-35, endPoint[0]+15, endPoint[1]-35, "#e00000");
 
 	//Set up the Tweetliner flight path
 	function tweetFlightPath(x, y, zx, zy, colour) {
         var ax = 200 + x;
-        var ay = 400 + (y - 150);
+        var ay = 700 + (y - 150);
         var bx = 255 + (zx - 100);
         var by = 500 + (zy - 400);
         controls = 	map.set(
